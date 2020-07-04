@@ -1,23 +1,25 @@
-import mongoose from "mongoose";
-import Bug from "../models/Bug";
-
-const _repository = mongoose.model("Bug", Bug);
+const _repo = require("../repo/repo_users");
 
 class UserService {
-	async login (data) {
-	
+	async login ( data ) {
+		_repo.
 	}
 	
-	async register (data) {
-	
+	async register ( data ) {
+		if (!data.username && !data.email)
+			throw new Error("Please include username and password.")
+		else if (data.password.length < 6)
+			throw new Error("Password not long enough.");
+		else if (data.username.length < 6)
+			throw new Error("Username not long enough.");
+		
+		
 	}
 	
-	async delete (id) {
-	
+	async delete ( id ) {
 	}
 	
-	async update (id, updatedData) {
-	
+	async update ( id, updatedData ) {
 	}
 }
 
