@@ -1,16 +1,23 @@
 class user {
 	constructor () {
-		this.client = require("./repo_conf");
+		this.client = require("../util/repo_conf");
 		this.crypto = require("crypto");
 	}
 	
 	async login ( data ) {
+		let res;
 		
-		let res = await this.client.query("SELECT 1 FROM users WHERE email = $1", [ data.email ])
-		console.log(res);
+		try {
+			res = await this.client.query("SELECT * FROM users WHERE email = $1", [ data.email ]).rows[0];
+		} catch (e) {
+			console.error("There has been an error: ")
+			console.error(e)
+		}
 		
+		if (this.passwordChecker(data.password, res.password))
+			return res
+		else throw new Error("Wrong email or password");
 		
-		// data.password = this.hashPassword(data.password);
 	}
 	
 	register () {
@@ -28,7 +35,7 @@ class user {
 		return bcrypt.hashSync(pass, 10);
 	}
 	
-	passwordChecker (pass, hash) {
+	passwordChecker ( pass, hash ) {
 		return !!bcrypt.compareSync(pass, hash);
 	}
 }

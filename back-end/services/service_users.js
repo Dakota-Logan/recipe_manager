@@ -2,7 +2,7 @@ const _repo = require("../repo/repo_users");
 
 class UserService {
 	async login ( data ) {
-		_repo.
+		return await _repo.login(data)
 	}
 	
 	async register ( data ) {
@@ -24,4 +24,4 @@ class UserService {
 }
 
 const service = new UserService();
-export default service;
+module.exports = service;
