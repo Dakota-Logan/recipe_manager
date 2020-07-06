@@ -1,6 +1,12 @@
 const _repo = require("../repo/repo_users");
 
 class UserService {
+	
+	async FindUser (email, password) {
+		let user = await _repo.FindUser(email);
+		if()
+	}
+	
 	async login ( data ) {
 		return await _repo.login(data)
 	}

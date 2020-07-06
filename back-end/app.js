@@ -12,6 +12,8 @@ var app = express();
 app.use(require("express-session")({
 	secret: process.env.SESSION_SECRET
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -22,6 +24,8 @@ app.use(cookieParser(""));
 
 app.use(express.static(path.join(__dirname, "public")));
 
+
+//Routes
 app.use("/user", new usersRouter().router);
 
 module.exports = app;
