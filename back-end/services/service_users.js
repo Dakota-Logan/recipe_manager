@@ -1,5 +1,5 @@
 const _repo = require("../repo/repo_users");
-const CC = require("../util/crypto");
+const CC = require("../conf/crypto");
 
 
 class UserService {
@@ -23,12 +23,23 @@ class UserService {
 	async register ( data ) {
 		if (!data.username && !data.email)
 			throw new Error("Please include username and password.")
+		else if (data.username.length < 5)
+			throw new Error("Username should be between 5 and 15 characters long.");
 		else if (data.password.length < 6)
 			throw new Error("Password not long enough.");
-		else if (data.username.length < 6)
-			throw new Error("Username not long enough.");
+		else if (data.password.length > 100)
+			throw new Error("Due to storage restraints, please shorten you password. (but damn that would be a secure password lol)");
 		
+		let salt = CC.generateSalt();
 		
+		let newUser = {
+			username: data.username,
+			email: data.email,
+			salt: salt,
+			hash: CC.encryptPassword(data.password, salt)
+		}
+		
+		return await _repo.register(newUser);
 	}
 	
 	async delete ( id ) {

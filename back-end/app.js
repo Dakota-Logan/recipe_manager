@@ -1,7 +1,7 @@
 const express = require("express")
-	, constpath = require("path")
-	, cookieParser = require("cookie-parser")
 	, logger = require("morgan")
+	, path = require("path")
+	, cookieParser = require("cookie-parser")
 	, bodyParser = require("body-parser")
 	, passport = require("passport");
 
@@ -11,8 +11,12 @@ var app = express();
 
 // app.use(require("express-flash")());
 app.use(require("express-session")({
-	secret: process.env.SESSION_SECRET
+	secret: process.env.SESSION_SECRET,
+	resave: false,
+	saveUninitialized: true,
+	cookie: { maxAge: 1000 * 30 }
 }));
+require("./conf/passport")(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -1,35 +1,33 @@
 //? Queries for ease of use.
 let fndUsr = "SELECT * FROM users WHERE email = $1";
+let regi = "INSERT INTO users (username, email, hash, salt) VALUES ($1, $2, $3, $4)";
 
 
 class user {
 	constructor () {
-		this.client = require("../util/repo_conf");
+		this.client = require("../conf/repo_conf");
 	}
 	
 	async FindUser(email) {
-		return await this.client.query(fndUsr, email).rows[0];
+		return await this.client.query(fndUsr, [email]).rows[0];
 	}
 	
 	async login ( data ) {
 	}
 	
-	register () {
+	async register (usr) {
+		await this.client.query(regi, [usr.username, usr.email, usr.hash, usr.salt]);
 	}
 	
-	resetPassword () {
+	async resetPassword () {
 	}
 	
 	//soft(ish?) delete (personal info gone, statistics kept)
-	deleteAccount () {
+	async deleteAccount () {
 	}
 	
-	hashPassword ( pass ) {
+	async hashPassword ( pass ) {
 		return bcrypt.hashSync(pass, 10);
-	}
-	
-	passwordChecker ( pass, hash ) {
-		return !!bcrypt.compareSync(pass, hash);
 	}
 }
 

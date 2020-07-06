@@ -5,6 +5,7 @@ let express = require("express")
 
 passport.use(new LocalStrategy(async ( email, password, done ) => {
 	try {
+		console.log("LOCAL STRATEGY ENACTING:", `\n email/pw: ${email}\\${password}`)
 		let user = await userService.FindUser(email, password);
 		return done(null, user);
 	} catch (e) {
@@ -19,12 +20,12 @@ class UserController {
 		this.router = express
 			.Router()
 			.use("/", this.log)
-		get("/", this.accountPage)
 			.post("/login", this.login)
 			.post("/register", this.register)
-			.delete("/delete", this.delete)
-			.post("/logout", this.logout)
+			// .delete("/delete", this.delete)
+			// .post("/logout", this.logout)
 			.use("", this.last)
+			.get("/isauth", this.loggedInQ)
 	}
 	
 	log ( req, res, next ) {
@@ -34,15 +35,26 @@ class UserController {
 	}
 	
 	async login ( req, res, next ) {
-	
+		try {
+			passport.authenticate("local",
+				{},
+				(err, res, req, next)=>{
+					if(err)
+						res.status(400).send("Bad username or password.")
+				});
+			res.send("Logged In!");
+		} catch (e) {
+			return res.redirect("/register");
+		}
 	}
 	
 	async register ( req, res, next ) {
 		try {
 			let user = await userService.register(req.body);
-			
+			return res.status(200).send("Successfully created account!")
 		} catch (e) {
-			res.statusCode(400).send("An error has occurred.");
+			console.log(e)
+			return res.status(400).send("An error has occurred.");
 		}
 	}
 	
@@ -59,6 +71,12 @@ class UserController {
 		req.logout();
 		res.redirect("/");
 	}
+	
+	async loggedInQ (req, res, next) {
+		let ath = req.isAuthenticated();
+		res.send(`Are you authenticated? : ${ath}`);
+	}
+	
 }
 
 module.exports = UserController;
