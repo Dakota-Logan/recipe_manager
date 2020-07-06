@@ -1,17 +1,21 @@
 let crypto = require("crypto");
 
-function generateSalt () {
-	return crypto.randomBytes(16).toString("base64");
+class CC {
+	generateSalt () {
+		return crypto.randomBytes(16).toString("base64");
+	}
+	
+	encryptPassword ( pass, salt ) {
+		return crypto
+			.createHash("RSA-SHA256")
+			.update(pass)
+			.update(salt)
+			.digest("hex");
+	}
+	
+	correctPassword ( pass, salt, hash ) {
+		return ( this.encryptPassword(pass, salt) === hash );
+	}
 }
 
-function encryptPassword ( pass, salt ) {
-	return crypto
-		.createHash("RSA-SHA256")
-		.update(pass)
-		.update(salt)
-		.digest("hex");
-}
-
-function correctPassword ( pass, salt ) {
-	return encryptPassword(pass, salt)
-}
+module.exports = new CC;

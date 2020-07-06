@@ -1,10 +1,19 @@
 const _repo = require("../repo/repo_users");
+const CC = require("../util/crypto");
+
 
 class UserService {
 	
 	async FindUser (email, password) {
 		let user = await _repo.FindUser(email);
-		// if()
+		
+		if (!CC.correctPassword(password, user.salt, user.hash))
+			throw new Error("Bad password or email.");
+		else {
+			delete user.hash;
+			delete user.salt;
+			return user;
+		}
 	}
 	
 	async login ( data ) {

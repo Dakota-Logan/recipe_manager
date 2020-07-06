@@ -3,7 +3,7 @@ let express = require("express")
 	, passport = require("passport")
 	, LocalStrategy = require("passport-local").Strategy;
 
-passport.use(new LocalStrategy(async (email, password, done)=>{
+passport.use(new LocalStrategy(async ( email, password, done ) => {
 	try {
 		let user = await userService.FindUser(email, password);
 		return done(null, user);
@@ -38,7 +38,12 @@ class UserController {
 	}
 	
 	async register ( req, res, next ) {
-	
+		try {
+			let user = await userService.register(req.body);
+			
+		} catch (e) {
+			res.statusCode(400).send("An error has occurred.");
+		}
 	}
 	
 	last ( req, res, next ) {

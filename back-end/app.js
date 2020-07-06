@@ -1,8 +1,9 @@
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const bodyParser = require("body-parser");
+const express = require("express")
+	, constpath = require("path")
+	, cookieParser = require("cookie-parser")
+	, logger = require("morgan")
+	, bodyParser = require("body-parser")
+	, passport = require("passport");
 
 const usersRouter = require("./controllers/controller_users");
 

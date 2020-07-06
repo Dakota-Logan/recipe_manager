@@ -1,16 +1,14 @@
 //? Queries for ease of use.
-
-
+let fndUsr = "SELECT * FROM users WHERE email = $1";
 
 
 class user {
 	constructor () {
 		this.client = require("../util/repo_conf");
-		this.crypto = require("crypto");
 	}
 	
 	async FindUser(email) {
-		return await this.client.query()
+		return await this.client.query(fndUsr, email).rows[0];
 	}
 	
 	async login ( data ) {
