@@ -5,6 +5,7 @@ node_modules
 
 # local env files
 .env
+./back-end/.env
 .env.local
 .env.*.local
 

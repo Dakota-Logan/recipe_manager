@@ -4,7 +4,7 @@ class UserService {
 	
 	async FindUser (email, password) {
 		let user = await _repo.FindUser(email);
-		if()
+		// if()
 	}
 	
 	async login ( data ) {
