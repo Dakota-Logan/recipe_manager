@@ -3,16 +3,18 @@ let express = require("express")
 	, passport = require("passport")
 	, LocalStrategy = require("passport-local").Strategy;
 
-passport.use(new LocalStrategy(async ( email, password, done ) => {
-	try {
-		console.log("LOCAL STRATEGY ENACTING:", `\n email/pw: ${email}\\${password}`)
-		let user = await userService.FindUser(email, password);
-		return done(null, user);
-	} catch (e) {
-		return done(null, false);
-	}
-	
-}))
+
+passport.use(new LocalStrategy(
+	( username, password, done ) => {
+		console.log("LOCAL STRATEGY ENACTING");
+		try {
+			let user = userService.FindUser(username, password);
+			return done(null, user);
+		} catch (e) {
+			return done(null, false);
+		}
+		
+	}))
 
 
 class UserController {
@@ -20,12 +22,25 @@ class UserController {
 		this.router = express
 			.Router()
 			.use("/", this.log)
-			.post("/login", this.login)
+			.get("/isauth", this.loggedInQ)
+			.post("/login", passport.authenticate("local"), this.login)
 			.post("/register", this.register)
 			// .delete("/delete", this.delete)
 			// .post("/logout", this.logout)
+			.get("/loginS", ( req, res ) => {
+				res.send("You have logged in.")
+			})
+			.get("/loginF", ( req, res ) => {
+				res.send("You have failed to log in.")
+			})
+			.get('/login', ( req, res ) => {
+				const form = '<h1>Login Page</h1><form method="POST" action="/user/login">\
+   Enter Email:<br><input type="text" name="email">\
+    <br>Enter Password:<br><input type="password" name="password">\
+    <br><br><input type="submit" value="Submit"></form>';
+				res.send(form);
+			})
 			.use("", this.last)
-			.get("/isauth", this.loggedInQ)
 	}
 	
 	log ( req, res, next ) {
@@ -36,19 +51,13 @@ class UserController {
 	
 	async login ( req, res, next ) {
 		try {
-			passport.authenticate("local",
-				{},
-				(err, res, req, next)=>{
-					if(err)
-						res.status(400).send("Bad username or password.")
-				});
-			res.send("Logged In!");
+		
 		} catch (e) {
-			return res.redirect("/register");
+		
 		}
 	}
 	
-	async register ( req, res, next ) {
+	async register ( req, res ) {
 		try {
 			let user = await userService.register(req.body);
 			return res.status(200).send("Successfully created account!")
@@ -58,23 +67,20 @@ class UserController {
 		}
 	}
 	
-	last ( req, res, next ) {
-		res.status(404).send("Could not find that one, sorry!");
-	}
-	
-	async profile ( req, res, next ) {
-		// require("connect-ensure-login").ensureLoggedIn();
-		
-	}
-	
-	async logout ( req, res, next ) {
+	async logout ( req, res ) {
 		req.logout();
 		res.redirect("/");
 	}
 	
-	async loggedInQ (req, res, next) {
+	async loggedInQ ( req, res ) {
+		console.log("Checking for authentication: \n", req.session)
 		let ath = req.isAuthenticated();
-		res.send(`Are you authenticated? : ${ath}`);
+		console.log(ath);
+		res.send(`<h1>Are you authenticated? : ${ath}</h1>`);
+	}
+	
+	last ( req, res ) {
+		res.status(404).send("Could not find that one, sorry!");
 	}
 	
 }

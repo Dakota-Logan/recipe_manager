@@ -9,6 +9,7 @@ class user {
 	}
 	
 	async FindUser(email) {
+		console.log("FINDING USER THANK YOU COME AGAIN!")
 		return await this.client.query(fndUsr, [email]).rows[0];
 	}
 	
