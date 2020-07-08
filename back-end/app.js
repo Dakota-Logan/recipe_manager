@@ -24,10 +24,24 @@ app.use(require("express-session")({
 	secret: process.env.SESSION_SECRET,
 	resave: false,
 	saveUninitialized: true,
-	cookie: { maxAge: 1000 * 30 }
+	cookie: { maxAge: 60 * 60 * 24 }
 }));
 
-require("./conf/passport")(passport);
+//<editor-fold desc="-> Passport de/serialization">
+passport.serializeUser(( user, done ) => {
+	done(null, user.email);
+});
+
+passport.deserializeUser(async ( email, cb ) => {
+	try {
+		cb(null, await require("./repo/repo_users").FindUser(email));
+	} catch (e) {
+		console.log(e);
+		return cb(e);
+	}
+});
+//</editor-fold>
+
 app.use(passport.initialize());
 app.use(passport.session());
 

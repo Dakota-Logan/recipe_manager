@@ -9,11 +9,8 @@ class user {
 	}
 	
 	async FindUser(email) {
-		console.log("FINDING USER THANK YOU COME AGAIN!")
-		return await this.client.query(fndUsr, [email]).rows[0];
-	}
-	
-	async login ( data ) {
+		let res = await this.client.query(fndUsr, [email]);
+		return res.rows[0];
 	}
 	
 	async register (usr) {

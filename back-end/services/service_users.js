@@ -6,6 +6,7 @@ class UserService {
 	
 	async FindUser (email, password) {
 		let user = await _repo.FindUser(email);
+		console.log("Service user: ", user)
 		
 		if (!CC.correctPassword(password, user.salt, user.hash))
 			throw new Error("Bad password or email.");

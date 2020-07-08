@@ -5,10 +5,12 @@ let express = require("express")
 
 
 passport.use(new LocalStrategy(
-	( username, password, done ) => {
-		console.log("LOCAL STRATEGY ENACTING");
+	{ usernameField: "email" },
+	async ( username, password, done ) => {
 		try {
-			let user = userService.FindUser(username, password);
+			console.log("LOCAL STRAT")
+			let user = await userService.FindUser(username, password);
+			console.log(`STRAT User: ${user.toString()}`);
 			return done(null, user);
 		} catch (e) {
 			return done(null, false);
@@ -21,9 +23,9 @@ class UserController {
 	constructor () {
 		this.router = express
 			.Router()
-			.use("/", this.log)
+			// .use("/", this.log)
 			.get("/isauth", this.loggedInQ)
-			.post("/login", passport.authenticate("local"), this.login)
+			.post("/login", this.login)
 			.post("/register", this.register)
 			// .delete("/delete", this.delete)
 			// .post("/logout", this.logout)
@@ -49,12 +51,10 @@ class UserController {
 		next();
 	}
 	
-	async login ( req, res, next ) {
-		try {
-		
-		} catch (e) {
-		
-		}
+	async login (req, res, next ) {
+		console.log("Hello!")
+		passport.authenticate("local", { successRedirect: "/user/loginS", failureRedirect: "/user/loginF"})(req, res, next);
+		console.log(req.user)
 	}
 	
 	async register ( req, res ) {
