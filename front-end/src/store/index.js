@@ -14,7 +14,9 @@ let api = Axios.create({
 
 export default new Vuex.Store({
 	state: {
-		loadedRecipes: []
+		loadedRecipes: [],
+		isLoggedIn: false,
+		account: {}
 	},
 	mutations: {},
 	actions: {
