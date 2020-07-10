@@ -9,14 +9,15 @@
 		</div>
 		
 		<div class="uk-navbar-center">
-			<input type="text" class="uk-search">
+			<input type="text" class="uk-search" @click="getRecipes">
 		</div>
 		
-		<div class="uk-navbar-right" v-if="this.loggedIn">
+		<div class="uk-navbar-right" v-if="!this.loggedIn">
 			<ul class="uk-navbar-nav">
-				<li href="/login" v-bind:class="{ 'uk-active': (isActive == 'login') }">Login</li>
-				<li href="/register" v-bind:class="{ 'uk-active': (isActive == 'register') }">Register</li>
-			</ul></div>
+				<li ><a @click="goto('login')" v-bind:class="{ 'uk-active': (isActive == 'login') }">Login</a></li>
+				<li><a @click="goto('regitster')" v-bind:class="{ 'uk-active': (isActive == 'register') }">Register</a></li>
+			</ul>
+		</div>
 		
 	</nav>
 </template>
@@ -25,6 +26,11 @@
 	export default {
 		name: "navbar",
 		props: ["isActive"],
+		methods: {
+			goto(addr) {
+				this.$router.push(addr)
+			}
+		},
 		computed: {
 			loggedIn() {
 				return this.$store.state.isLoggedIn;

@@ -8,36 +8,32 @@ import search_recipes from "../views/search_recipes";
 
 Vue.use(VueRouter)
 
-const routes = [
-	{
-		path: "/",
-		name: "home",
-		component: home
-	},
-	{
-		path: "/recipes",
-		name: "recipes",
-		component: recipes
-	},
-	{
-		path: "/login",
-		name: "login",
-		component: login
-	},
-	{
-		path: "/register",
-		name: "register",
-		component: register
-	},
-	{
-		path: "/search",
-		name: "search_recipes",
-		component: search_recipes
-	}
-]
-
-const router = new VueRouter({
-	routes
-})
-
-export default router
+export default new VueRouter({
+	routes: [
+		{
+			path: "/",
+			name: "home",
+			component: home
+		},
+		{
+			path: "/recipes",
+			name: "recipes",
+			component: recipes
+		},
+		{
+			path: '/login',
+			name: 'login',
+			component: login
+		},
+		{
+			path: "/register",
+			name: "register",
+			component: register
+		},
+		{
+			path: "/search",
+			name: "search_recipes",
+			component: search_recipes
+		}
+	]
+});
