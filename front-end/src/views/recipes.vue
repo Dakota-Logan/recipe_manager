@@ -9,8 +9,8 @@
 	import navbar from "../components/navbar.vue";
 	
 	export default {
-		name: "recipes"
-		, components: {
+		name: "recipes",
+		components: {
 			navbar
 		}
 	}

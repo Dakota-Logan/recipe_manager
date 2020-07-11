@@ -1,11 +1,18 @@
 <template>
-
+	<div>
+		<navbar/>
+	</div>
 </template>
 
 <script>
-export default {
-name: "create_recipe"
-}
+	import navbar from "../components/navbar.vue";
+	
+	export default {
+		name: "create_recipe",
+		components: {
+			navbar
+		}
+	}
 </script>
 
 <style scoped>
