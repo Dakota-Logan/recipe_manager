@@ -8,7 +8,7 @@
 			</ul>
 		</div>
 		
-		<div class="uk-navbar-center">
+		<div class="uk-navbar-center" v-if="['login', 'register'].indexOf(this.$router.currentRoute.name) == -1">
 			<form @submit="getRecipes" class="uk-form-horizontal uk-flex-inline">
 				<input type="text" placeholder="Search Recipes" class="uk-search-input" v-model="search">
 				<button class="uk-button">Sumbit</button>
@@ -36,7 +36,9 @@
 		},
 		methods: {
 			goto ( addr ) {
-				this.$router.push(addr)
+				console.log(this.$router.currentRoute)
+				if (this.$router.currentRoute.name != addr)
+					this.$router.push(addr);
 			},
 			getRecipes () {
 				console.log(this.$data.search)
