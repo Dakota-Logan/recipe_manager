@@ -38,8 +38,7 @@
 		},
 		methods: {
 			goto ( addr ) {
-				if (this.$router.currentRoute.name != addr)
-					this.$router.push(addr);
+				this.$router.push(addr).catch(e => e);
 			},
 			getRecipes () {
 				console.log(this.$data.search)
@@ -50,7 +49,7 @@
 				"isLogged"
 			]),
 			currRoute () {
-				return !!([ 'login', 'register' ].indexOf(this.thisRoute) == -1);
+				return !!( [ 'login', 'register' ].indexOf(this.thisRoute) == -1 );
 			},
 			thisRoute () {
 				return this.$router.currentRoute.name;

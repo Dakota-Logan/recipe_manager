@@ -58,7 +58,7 @@ const mod = {
 		}
 	},
 	getters: {
-		isLogged ( { state } ) {
+		isLogged ( state ) {
 			return state.isUserLoggedIn;
 		}
 	}
