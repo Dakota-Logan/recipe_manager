@@ -3,7 +3,8 @@ let express = require("express")
 	, passport = require("passport")
 	, LocalStrategy = require("passport-local").Strategy;
 
-
+//!TODO finish the routes for login (no get, only api routes) logout, delete account, etc.
+//TODOi TEST ALL ROUTES FOR FUNCTIONALITY AND BASIC AUTH REQ
 passport.use(new LocalStrategy(
 	{ usernameField: "email" },
 	async ( username, password, done ) => {

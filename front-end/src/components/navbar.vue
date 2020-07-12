@@ -8,14 +8,14 @@
 			</ul>
 		</div>
 		
-		<div class="uk-navbar-center" v-if="['login', 'register'].indexOf(this.$router.currentRoute.name) == -1">
+		<div class="uk-navbar-center" v-if="currRoute">
 			<form @submit="getRecipes" class="uk-form-horizontal uk-flex-inline">
 				<input type="text" placeholder="Search Recipes" class="uk-search-input" v-model="search">
 				<button class="uk-button">Sumbit</button>
 			</form>
 		</div>
 		
-		<div class="uk-navbar-right" v-if="!this.loggedIn">
+		<div class="uk-navbar-right" v-if="!this.isLogged">
 			<ul class="uk-navbar-nav">
 				<li><a @click="goto('login')" v-bind:class="{ 'uk-active': (isActive == 'login') }">Login</a></li>
 				<li><a @click="goto('regitster')" v-bind:class="{ 'uk-active': (isActive == 'register') }">Register</a></li>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+	import { mapGetters } from "vuex";
+	
 	export default {
 		name: "navbar",
 		props: [ "isActive" ],
@@ -36,7 +38,6 @@
 		},
 		methods: {
 			goto ( addr ) {
-				console.log(this.$router.currentRoute)
 				if (this.$router.currentRoute.name != addr)
 					this.$router.push(addr);
 			},
@@ -45,8 +46,14 @@
 			}
 		},
 		computed: {
-			loggedIn () {
-				return this.$store.state.isLoggedIn;
+			...mapGetters([
+				"isLogged"
+			]),
+			currRoute () {
+				return !!([ 'login', 'register' ].indexOf(this.thisRoute) == -1);
+			},
+			thisRoute () {
+				return this.$router.currentRoute.name;
 			}
 		}
 	}
