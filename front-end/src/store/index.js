@@ -14,6 +14,7 @@ export default new Vuex.Store({
 	actions: {
 		getRecipes ( { commit, dispatch }, ) {},
 		
+		//Helper functions
 		/**
 		 * @method
 		 * The 1, 2, and 3 arguments should be as follows: 1| where |2| method |3| data
@@ -24,9 +25,14 @@ export default new Vuex.Store({
 		 * @returns {Promise<Response|*>}
 		 */
 		async SOFetch ( { commit, dispatch }, w, m, d ) {
-			let where = w,
+			let where,
 				method,
 				data = d;
+			
+			if (w[0] == "/")
+				where = "http://localhost:8080";
+			else
+				where = "http://localhost:8080/"
 			
 			//? Check the type of fetch request.
 			switch (m.toLowerCase()) {

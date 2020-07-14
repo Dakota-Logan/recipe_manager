@@ -4,22 +4,33 @@ const mod = {
 	} ),
 	mutations: {
 		//TODO Start
-		login ( state, data ) {
+		login ( state ) {
+		
 		},
 		//TODO Start
-		register ( state, data ) {
+		register ( state ) {
 		},
 		//TODO Start
 		logout ( state, data ) {
 		}
 	},
 	actions: {
-		//TODO Start
-		login ( { commit, dispatch }, creds ) {
-			dispatch("SOFetch",)
+		//TODOi Test
+		async login ( { commit, dispatch }, loginCredentials ) {
+			let data = {
+				email: loginCredentials.email,
+				password: loginCredentials.password
+			};
+			let loginResult = await dispatch("SOFetch", "/user/login", "c", data);
+			console.log(loginResult);
 		},
 		//TODO Start
-		register ( { commit, dispatch }, account ) {
+		register ( { commit, dispatch }, accountDetails ) {
+			let data = {
+				email: accountDetails.email,
+				password: accountDetails.password
+			};
+			dispatch
 		},
 		//TODO Start
 		logout () {

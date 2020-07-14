@@ -1,19 +1,18 @@
 <template>
 	<div>
-		<div class="uk-width-1-1 uk-height-1-1">
-			<form action=""
-			      class="uk-form-horizontal uk-position-center uk-border-rounded uk-width-2-5 uk-flex uk-flex-column"
-			      style="border: 2px solid black;
-						 padding: 3rem 5rem;
+		<div class=" uk-container-expand uk-responsive-height">
+			<form
+				class="uk-align-center uk-form-horizontal uk-border-rounded uk-width-2-5@l uk-width-1-2@m  uk-width-1-1@s uk-flex uk-flex-column"
+				style="border: 2px solid black;
+						 padding: 3rem 4rem;
 						 box-shadow: 5px 5px 20px gray;
 						 background-color: gainsboro;
-						 min-width: 50%;
-						">
+				">
 				<h1>Log In: </h1>
 				<h3>Email</h3>
-				<input type="text" placeholder="email" class="uk-input" v-model="userData.username">
+				<input class="uk-input" placeholder="email" type="text" v-model="userData.email">
 				<h2>Password</h2>
-				<input type="password" placeholder="password" class="uk-input" v-model="userData.password">
+				<input class="uk-input" placeholder="password" type="password" v-model="userData.password">
 				<button class="uk-button-large uk-align-center">submit</button>
 				<p class="uk-align-center">Don't have an account? Create one <a @click="">HERE.</a></p>
 			</form>
@@ -22,22 +21,25 @@
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
-	//TODO finish login functionality and testing
-	export default {
-		name: "login",
-		data () {
-			return {
-				userData: {
-					username: "",
-					password: ""
-				}
-			}
-		},
-		methods: {
-			login () {
-				this.SOFetch()
+import { mapActions } from "vuex";
+//TODO finish login functionality and testing
+export default {
+	name: "login",
+	data () {
+		return {
+			userData: {
+				email: "",
+				password: ""
 			}
 		}
+	},
+	methods: {
+		...mapActions([
+			"login"
+		]),
+		login () {
+			this.login(this.userData);
+		}
 	}
+}
 </script>
