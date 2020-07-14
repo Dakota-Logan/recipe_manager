@@ -13,6 +13,7 @@ export default new Vuex.Store({
 	mutations: {},
 	actions: {
 		getRecipes ( { commit, dispatch }, ) {},
+		
 		/**
 		 * @method
 		 * The 1, 2, and 3 arguments should be as follows: 1| where |2| method |3| data

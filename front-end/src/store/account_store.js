@@ -3,23 +3,30 @@ const mod = {
 		isUserLoggedIn: false
 	} ),
 	mutations: {
+		//TODO Start
 		login ( state, data ) {
-		
-			
 		},
+		//TODO Start
 		register ( state, data ) {
 		},
+		//TODO Start
 		logout ( state, data ) {
 		}
 	},
 	actions: {
+		//TODO Start
 		login ( { commit, dispatch }, creds ) {
-			dispatch("SOFetch", )
+			dispatch("SOFetch",)
 		},
+		//TODO Start
 		register ( { commit, dispatch }, account ) {
 		},
+		//TODO Start
 		logout () {
 		},
+		//TODO Start
+		getAccount () {
+		}
 	},
 	getters: {
 		isLogged ( state ) {
