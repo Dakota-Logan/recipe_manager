@@ -1,3 +1,4 @@
+//TODOi fix cors (app.use(cors());
 const express = require("express")
 	, logger = require("morgan")
 	, path = require("path")

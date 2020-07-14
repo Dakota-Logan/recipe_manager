@@ -24,15 +24,17 @@ export default new Vuex.Store({
 		 * @param d {object} - The data to pass on (no formatting of the data is done between this method and the api).
 		 * @returns {Promise<Response|*>}
 		 */
-		async SOFetch ( { commit, dispatch }, w, m, d ) {
+		async SOFetch ( { commit, dispatch }, { w, m, d } ) {
+			// console.log(`sofetch params: w-${w}, m-${m}, d-${d}`);
+			console.log(d)
 			let where,
 				method,
 				data = d;
 			
 			if (w[0] == "/")
-				where = "http://localhost:8080";
+				where = "http://localhost:3000" + w;
 			else
-				where = "http://localhost:8080/"
+				where = "http://localhost:3000/" + w;
 			
 			//? Check the type of fetch request.
 			switch (m.toLowerCase()) {

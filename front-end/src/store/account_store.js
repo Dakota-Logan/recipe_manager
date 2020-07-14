@@ -17,11 +17,12 @@ const mod = {
 	actions: {
 		//TODOi Test
 		async login ( { commit, dispatch }, loginCredentials ) {
+			console.log("in login action")
 			let data = {
 				email: loginCredentials.email,
 				password: loginCredentials.password
 			};
-			let loginResult = await dispatch("SOFetch", "/user/login", "c", data);
+			let loginResult = await dispatch("SOFetch", {w: "/user/login", m: "c", d: data });
 			console.log(loginResult);
 		},
 		//TODO Start

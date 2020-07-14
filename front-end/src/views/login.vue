@@ -2,6 +2,7 @@
 	<div>
 		<div class=" uk-container-expand uk-responsive-height">
 			<form
+				@submit.prevent="login"
 				class="uk-align-center uk-form-horizontal uk-border-rounded uk-width-2-5@l uk-width-1-2@m  uk-width-1-1@s uk-flex uk-flex-column"
 				style="border: 2px solid black;
 						 padding: 3rem 4rem;
@@ -13,7 +14,7 @@
 				<input class="uk-input" placeholder="email" type="text" v-model="userData.email">
 				<h2>Password</h2>
 				<input class="uk-input" placeholder="password" type="password" v-model="userData.password">
-				<button class="uk-button-large uk-align-center">submit</button>
+				<button type="submit" class="uk-button-large uk-align-center">submit</button>
 				<p class="uk-align-center">Don't have an account? Create one <a @click="">HERE.</a></p>
 			</form>
 		</div>
@@ -34,11 +35,11 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions([
-			"login"
-		]),
+		...mapActions({
+			loginAction: "login"
+		}),
 		login () {
-			this.login(this.userData);
+			this.loginAction(this.userData);
 		}
 	}
 }
