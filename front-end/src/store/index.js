@@ -1,19 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import Axios from "axios";
 import ModA from "./account_store.js";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		loadedRecipes: [],
-		account: {}
+		loadedRecipes: []
 	},
 	mutations: {},
 	actions: {
 		getRecipes ( { commit, dispatch }, ) {},
 		
+		//Helper functions
 		/**
 		 * @method
 		 * The 1, 2, and 3 arguments should be as follows: 1| where |2| method |3| data
@@ -23,10 +22,16 @@ export default new Vuex.Store({
 		 * @param d {object} - The data to pass on (no formatting of the data is done between this method and the api).
 		 * @returns {Promise<Response|*>}
 		 */
-		async SOFetch ( { commit, dispatch }, w, m, d ) {
-			let where = w,
+		async SOFetch ( { commit, dispatch }, { w, m, d } ) {
+			console.log(d)
+			let where,
 				method,
 				data = d;
+			
+			if (w[0] == "/")
+				where = "http://localhost:3000" + w;
+			else
+				where = "http://localhost:3000/" + w;
 			
 			//? Check the type of fetch request.
 			switch (m.toLowerCase()) {
@@ -48,12 +53,12 @@ export default new Vuex.Store({
 			}
 			
 			try {
-				let RR = await fetch(where, {
+				return await fetch(where, {
+					credentials: "include",
+					mode: "cors",
 					method: method,
 					body: data
 				});
-				
-				return RR;
 			} catch (e) {
 				return e;
 			}

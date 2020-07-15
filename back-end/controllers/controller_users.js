@@ -9,12 +9,15 @@ passport.use(new LocalStrategy(
 	{ usernameField: "email" },
 	async ( username, password, done ) => {
 		try {
-			console.log("LOCAL STRAT")
 			let user = await userService.FindUser(username, password);
-			console.log(`STRAT User: ${user.toString()}`);
+			console.log(`STRAT User: ${user.email}`);
 			return done(null, user);
 		} catch (e) {
-			return done(null, false);
+			console.error(e);
+			if (e.message.code === 400)
+				return done(null, true);
+			else
+				return done(null, false);
 		}
 		
 	}))
@@ -52,10 +55,19 @@ class UserController {
 		next();
 	}
 	
-	async login (req, res, next ) {
-		console.log("Hello!")
-		passport.authenticate("local", { successRedirect: "/user/loginS", failureRedirect: "/user/loginF"})(req, res, next);
-		console.log(req.user)
+	async login ( req, res, next ) {
+		passport.authenticate("local", ( _, user ) => {
+			if (user === false)
+				res.status(500).send("An internal error has occurred.");
+			else if (user === true)
+				res.status(400).send("Invalid username or password");
+			else {
+				req.login(user, { session: true }, (req, res) => {
+					console.log()});
+				res.status(200).send("Logged in!");
+			}
+		})(req, res, next);
+		
 	}
 	
 	async register ( req, res ) {
@@ -74,9 +86,9 @@ class UserController {
 	}
 	
 	async loggedInQ ( req, res ) {
-		console.log("Checking for authentication: \n", req.session)
 		let ath = req.isAuthenticated();
 		console.log(ath);
+		
 		res.send(`<h1>Are you authenticated? : ${ath}</h1>`);
 	}
 	
