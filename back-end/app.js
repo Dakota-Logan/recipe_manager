@@ -15,6 +15,7 @@ var app = express();
 app.use("/", serveStatic(path.join(__dirname + "/../front-end/dist")));
 
 app.use(logger("dev"));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 app.use(cookieParser(""));
 app.use(express.json());

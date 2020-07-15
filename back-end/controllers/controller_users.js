@@ -9,15 +9,15 @@ passport.use(new LocalStrategy(
 	{ usernameField: "email" },
 	async ( username, password, done ) => {
 		try {
+			console.log("LOCAL STRAT")
 			let user = await userService.FindUser(username, password);
 			console.log(`STRAT User: ${user.email}`);
 			return done(null, user);
 		} catch (e) {
-			console.error(e);
 			if (e.message.code === 400)
 				return done(null, true);
 			else
-				return done(null, false);
+				return done(null, false, e);
 		}
 		
 	}))
@@ -30,23 +30,9 @@ class UserController {
 			// .use("/", this.log)
 			.get("/isauth", this.loggedInQ)
 			.post("/login", this.login)
-			.post("/register", this.register)
-			// .delete("/delete", this.delete)
-			// .post("/logout", this.logout)
-			.get("/loginS", ( req, res ) => {
-				res.send("You have logged in.")
-			})
-			.get("/loginF", ( req, res ) => {
-				res.send("You have failed to log in.")
-			})
-			.get('/login', ( req, res ) => {
-				const form = '<h1>Login Page</h1><form method="POST" action="/user/login">\
-   Enter Email:<br><input type="text" name="email">\
-    <br>Enter Password:<br><input type="password" name="password">\
-    <br><br><input type="submit" value="Submit"></form>';
-				res.send(form);
-			})
-			.use("", this.last)
+			.post("/register", this.register);
+			// .delete("/delete", this.delete);;;
+			// .post("/logout", this.logout);;;
 	}
 	
 	log ( req, res, next ) {
@@ -62,8 +48,7 @@ class UserController {
 			else if (user === true)
 				res.status(400).send("Invalid username or password");
 			else {
-				req.login(user, { session: true }, (req, res) => {
-					console.log()});
+				req.login(user, { session: true }, () => {});
 				res.status(200).send("Logged in!");
 			}
 		})(req, res, next);
@@ -87,8 +72,6 @@ class UserController {
 	
 	async loggedInQ ( req, res ) {
 		let ath = req.isAuthenticated();
-		console.log(ath);
-		
 		res.send(`<h1>Are you authenticated? : ${ath}</h1>`);
 	}
 	
