@@ -23,7 +23,7 @@ const mod = {
 			state.isUserLoggedIn = false;
 			state.account.email = String;
 		},
-		clearAccount(state){
+		clearAccount ( state ) {
 			//?For latter use as clearing the account object gets bigger and clearing manually gets wet.
 		}
 	},
@@ -53,7 +53,7 @@ const mod = {
 		},
 		//TODO Finish and test
 		async logout ( { commit, dispatch, getters }, email ) {
-			if(!getters.isLogged())
+			if (!getters.isLogged())
 				throw new Error //TODO Properly handle this.
 			let data = { email };
 			let logoutResult = await dispatch("SOFetch", { w: "user/logout", m: "c", d: data });
@@ -71,13 +71,16 @@ const mod = {
 			//TODO commit data changes
 		},
 		//TODO Finish and test
-		async deleteAccount ( { commit, dispatch }, {e, p} ) {
+		async deleteAccount ( { commit, dispatch }, { e, p } ) {
 			let data = {
 				email: e,
 				password: p
 			};
-			dispatch("SOFetch", {w: "/user/deleteAccount", m: "d", d: data});
+			dispatch("SOFetch", { w: "/user/deleteAccount", m: "d", d: data });
 			commit("deleteAccount")
+		},
+		async loginCheck ( { dispatch } ) {
+			dispatch("SOFetch", {w:"/user/isAuth", m: "r", d: null})
 		}
 	},
 	getters: {

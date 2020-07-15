@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import Axios from "axios";
 import ModA from "./account_store.js";
 
 Vue.use(Vuex)
@@ -24,7 +23,6 @@ export default new Vuex.Store({
 		 * @returns {Promise<Response|*>}
 		 */
 		async SOFetch ( { commit, dispatch }, { w, m, d } ) {
-			// console.log(`sofetch params: w-${w}, m-${m}, d-${d}`);
 			console.log(d)
 			let where,
 				method,
@@ -55,12 +53,12 @@ export default new Vuex.Store({
 			}
 			
 			try {
-				let RR = await fetch(where, {
+				return await fetch(where, {
+					credentials: "include",
+					mode: "cors",
 					method: method,
 					body: data
 				});
-				
-				return RR;
 			} catch (e) {
 				return e;
 			}

@@ -17,6 +17,7 @@
 				<button type="submit" class="uk-button-large uk-align-center">submit</button>
 				<p class="uk-align-center">Don't have an account? Create one <a @click="">HERE.</a></p>
 			</form>
+			<button class="uk-button-group" @click="checkLogin">Check</button>
 		</div>
 	</div>
 </template>
@@ -36,10 +37,14 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			loginAction: "login"
+			loginAction: "login",
+			loginCheck: "loginCheck"
 		}),
 		login () {
 			this.loginAction(this.userData);
+		},
+		checkLogin () {
+			this.loginCheck();
 		}
 	}
 }

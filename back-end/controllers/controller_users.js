@@ -11,7 +11,7 @@ passport.use(new LocalStrategy(
 		try {
 			console.log("LOCAL STRAT")
 			let user = await userService.FindUser(username, password);
-			console.log(`STRAT User: ${user.toString()}`);
+			console.log(`STRAT User: ${user.email}`);
 			return done(null, user);
 		} catch (e) {
 			return done(null, false);
@@ -53,9 +53,8 @@ class UserController {
 	}
 	
 	async login (req, res, next ) {
-		console.log("Hello!")
-		passport.authenticate("local", { successRedirect: "/user/loginS", failureRedirect: "/user/loginF"})(req, res, next);
-		console.log(req.user)
+		passport.authenticate("local")(req, res, next);
+		
 	}
 	
 	async register ( req, res ) {
@@ -74,6 +73,7 @@ class UserController {
 	}
 	
 	async loggedInQ ( req, res ) {
+		
 		console.log("Checking for authentication: \n", req.session)
 		let ath = req.isAuthenticated();
 		console.log(ath);

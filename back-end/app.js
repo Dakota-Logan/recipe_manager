@@ -2,6 +2,7 @@
 const express = require("express")
 	, logger = require("morgan")
 	, path = require("path")
+	, serveStatic = require("serve-static")
 	, cookieParser = require("cookie-parser")
 	, bodyParser = require("body-parser")
 	, passport = require("passport")
@@ -15,7 +16,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // app.use(require("express-flash")());
 
-app.use(cors());
+app.use(cors({
+	origin: process.env.corsOrigin,
+	credentials: true,
+}));
 app.use(logger("dev"));
 app.use(bodyParser.json())
 app.use(cookieParser(""));
@@ -48,8 +52,12 @@ passport.deserializeUser(async ( email, cb ) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/", serveStatic(path.join(__dirname+"/../front-end/dist")));
 
 //Routes
+app.get(/.*/, (req, res) => {
+	res.sendFile(path.join(__dirname+"/../front-end/dist/index.html"));
+});
 app.use("/user", new usersRouter().router);
 
 module.exports = app;
