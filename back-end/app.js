@@ -4,7 +4,8 @@ const express = require("express")
 	, path = require("path")
 	, cookieParser = require("cookie-parser")
 	, bodyParser = require("body-parser")
-	, passport = require("passport");
+	, passport = require("passport")
+	, cors = require("cors");
 
 const usersRouter = require("./controllers/controller_users");
 
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // app.use(require("express-flash")());
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(bodyParser.json())
 app.use(cookieParser(""));
