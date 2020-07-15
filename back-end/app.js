@@ -8,18 +8,12 @@ const express = require("express")
 	, passport = require("passport")
 	, cors = require("cors");
 
-const usersRouter = require("./controllers/controller_users");
-
 var app = express();
-
-app.use(express.static(path.join(__dirname, "public")));
 
 // app.use(require("express-flash")());
 
-app.use(cors({
-	origin: process.env.corsOrigin,
-	credentials: true,
-}));
+app.use("/", serveStatic(path.join(__dirname + "/../front-end/dist")));
+
 app.use(logger("dev"));
 app.use(bodyParser.json())
 app.use(cookieParser(""));
@@ -29,9 +23,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(require("express-session")({
 	secret: process.env.SESSION_SECRET,
-	resave: false,
+	resave: true,
 	saveUninitialized: true,
-	cookie: { maxAge: 60 * 60 * 24 }
+	cookie: { maxAge: 60 * 60 * 24, secure: false }
 }));
 
 //<editor-fold desc="-> Passport de/serialization">
@@ -52,12 +46,11 @@ passport.deserializeUser(async ( email, cb ) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", serveStatic(path.join(__dirname+"/../front-end/dist")));
-
+const usersRouter = require("./controllers/controller_users");
 //Routes
-app.get(/.*/, (req, res) => {
+app.use("/user", new usersRouter().router);
+app.get("/*", (req, res) => {
 	res.sendFile(path.join(__dirname+"/../front-end/dist/index.html"));
 });
-app.use("/user", new usersRouter().router);
 
 module.exports = app;
