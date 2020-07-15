@@ -1,17 +1,30 @@
 const mod = {
 	state: () => ( {
-		isUserLoggedIn: false
+		isUserLoggedIn: false,
+		account: {
+			email: String
+		}
 	} ),
 	mutations: {
 		//TODO Start
-		login ( state ) {
-		
+		login ( state, email ) {
+			state.isUserLoggedIn = true;
+			state.account.email = email;
 		},
-		//TODO Start
-		register ( state ) {
+		register ( state, email ) {
+			state.isUserLoggedIn = true;
+			state.account.email = email;
 		},
-		//TODO Start
-		logout ( state, data ) {
+		logout ( state ) {
+			state.isUserLoggedIn = false;
+			state.account.email = String;
+		},
+		deleteAccount ( state ) {
+			state.isUserLoggedIn = false;
+			state.account.email = String;
+		},
+		clearAccount(state){
+			//?For latter use as clearing the account object gets bigger and clearing manually gets wet.
 		}
 	},
 	actions: {
@@ -22,22 +35,49 @@ const mod = {
 				email: loginCredentials.email,
 				password: loginCredentials.password
 			};
-			let loginResult = await dispatch("SOFetch", {w: "/user/login", m: "c", d: data });
+			let loginResult = await dispatch("SOFetch", { w: "/user/login", m: "c", d: data });
+			//TODO check status code for successful login
 			console.log(loginResult);
+			// commit("login")
 		},
-		//TODO Start
-		register ( { commit, dispatch }, accountDetails ) {
+		//TODO finish and test
+		async register ( { commit, dispatch }, accountDetails ) {
 			let data = {
 				email: accountDetails.email,
 				password: accountDetails.password
 			};
-			dispatch
+			let registerResult = await dispatch("SOFetch", { w: "/user/register", m: "c", d: data });
+			console.log(registerResult);
+			//TODO check status code for successful registration
+			// commit("register");
 		},
-		//TODO Start
-		logout () {
+		//TODO Finish and test
+		async logout ( { commit, dispatch, getters }, email ) {
+			if(!getters.isLogged())
+				throw new Error //TODO Properly handle this.
+			let data = { email };
+			let logoutResult = await dispatch("SOFetch", { w: "user/logout", m: "c", d: data });
+			state.account.email = String;
+			//TODO Confirm logout to the user.d
 		},
-		//TODO Start
-		getAccount () {
+		//TODO Finish and test
+		async getAccount ( { commit, dispatch, state } ) {
+			if (!state.isUserLoggenIn)
+				throw new Error(); //TODO Fail fast - redirect user to /login
+			
+			let data = { email: state.account.email };
+			
+			let accountResult = await dispatch("SOFetch", { w: "user/account", m: "r", d: data });
+			//TODO commit data changes
+		},
+		//TODO Finish and test
+		async deleteAccount ( { commit, dispatch }, {e, p} ) {
+			let data = {
+				email: e,
+				password: p
+			};
+			dispatch("SOFetch", {w: "/user/deleteAccount", m: "d", d: data});
+			commit("deleteAccount")
 		}
 	},
 	getters: {

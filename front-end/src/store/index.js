@@ -7,8 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		loadedRecipes: [],
-		account: {}
+		loadedRecipes: []
 	},
 	mutations: {},
 	actions: {
