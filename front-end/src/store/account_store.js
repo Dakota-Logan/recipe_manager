@@ -30,7 +30,7 @@ const mod = {
 	actions: {
 		//TODOi Test
 		async login ( { commit, dispatch }, loginCredentials ) {
-			console.log("in login action")
+			console.log(loginCredentials)
 			let data = {
 				email: loginCredentials.email,
 				password: loginCredentials.password
@@ -80,7 +80,7 @@ const mod = {
 			commit("deleteAccount")
 		},
 		async loginCheck ( { dispatch } ) {
-			dispatch("SOFetch", {w:"/user/isAuth", m: "r", d: null})
+			dispatch("SOFetch", {w:"/user/isAuth", m: "r"});
 		}
 	},
 	getters: {

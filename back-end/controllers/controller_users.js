@@ -1,7 +1,7 @@
 let express = require("express")
 	, userService = require("../services/service_users")
 	, passport = require("passport")
-	, LocalStrategy = require("passport-local").Strategy;
+	, LocalStrategy = require("passport-local").Strategy;3
 
 //!TODO finish the routes for login (no get, only api routes) logout, delete account, etc.
 //TODOi TEST ALL ROUTES FOR FUNCTIONALITY AND BASIC AUTH REQ
@@ -42,6 +42,7 @@ class UserController {
 	}
 	
 	async login ( req, res, next ) {
+		console.log(req.body);
 		passport.authenticate("local", ( _, user ) => {
 			if (user === false)
 				res.status(500).send("An internal error has occurred.");

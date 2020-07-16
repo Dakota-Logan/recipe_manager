@@ -14,8 +14,8 @@ export default new Vuex.Store({
 		
 		//Helper functions
 		/**
-		 * @method
 		 * The 1, 2, and 3 arguments should be as follows: 1| where |2| method |3| data
+		 * @method
 		 * @async
 		 * @param w {string} The address to fetch from. (/recipes, /user/account, etc.)
 		 * @param m {string} - Which method (crud operations) to use. Uses the letter of the operation from CRUD
@@ -24,41 +24,43 @@ export default new Vuex.Store({
 		 */
 		async SOFetch ( { commit, dispatch }, { w, m, d } ) {
 			console.log(d)
-			let where,
+			let where = w,
 				method,
-				data = d;
-			
-			if (w[0] == "/")
-				where = "http://localhost:3000" + w;
-			else
-				where = "http://localhost:3000/" + w;
+				data = d || null;
 			
 			//? Check the type of fetch request.
 			switch (m.toLowerCase()) {
 				case "c" :
-					method = "post";
+					method = "POST";
 					break;
 				case "r" :
-					method = "get";
+					method = "GET";
 					break;
 				case "u" :
-					method = "put";
+					method = "PUT";
 					break;
 				case "d" :
-					method = "delete";
+					method = "DELETE";
 					break;
 				default:
-					throw new Error("That is not a crud operation! (use lower case letters: c, r, u, or d)");
-					break;
+					throw new Error("That is not a crud operation!");
 			}
 			
 			try {
-				return await fetch(where, {
-					credentials: "include",
-					mode: "cors",
-					method: method,
-					body: data
-				});
+				if(method === "POST" || method === "PUT" || method === "DELETE"){
+					return await fetch(where, {
+						credentials: "include",
+						headers: new Headers({ "content-type": "application/json" }),
+						method: method,
+						body: JSON.stringify(data)
+					});
+				} else {
+					return await fetch(where, {
+						credentials: "include",
+						headers: new Headers({ "content-type": "application/json" }),
+						method: method
+					});
+				}
 			} catch (e) {
 				return e;
 			}
