@@ -22,11 +22,13 @@ export default {
 
 <style>
 html {
-	min-height: 100vh;
-	box-sizing: content-box;
+	height: 100%;
+	max-height: 100%;
+	box-sizing: border-box;
 }
-body {
-	min-height: 100vh;
+body, #app {
+	height: 100%;
+	min-height: 100%;
 }
 
 @import "~uikit/dist/css/uikit.css";
