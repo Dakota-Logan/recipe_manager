@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "generate-docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose"
   },
   "dependencies": {
+    "jsdoc": "^3.6.4",
     "uikit": "^3.5.4",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",

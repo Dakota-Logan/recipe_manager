@@ -90,4 +90,4 @@ const mod = {
 	}
 }
 
-module.exports = mod;
+export default mod;
